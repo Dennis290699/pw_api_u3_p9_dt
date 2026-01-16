@@ -1,0 +1,19 @@
+package uce.edu.web.api.matricula.domain;
+
+import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
+import jakarta.persistence.*;
+
+import java.time.LocalDateTime;
+
+@Entity
+@Table(name = "Estudiante")
+@SequenceGenerator(name = "estudiante_seq", sequenceName = "estudiante_secuencia", allocationSize = 1)
+public class Estudiante extends PanacheEntityBase {
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "estudiante_seq")
+    private Integer id;
+    private String nombre;
+    private String apellido;
+    private LocalDateTime fechaNacimiento;
+
+}
