@@ -73,5 +73,4 @@ public class MateriaResource {
         return materiaService.buscarPorNombre(nombre);
     }
 
-    // 3. Cambiar estado activo por ID
 }
