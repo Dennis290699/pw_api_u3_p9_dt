@@ -3,6 +3,7 @@ package uce.edu.web.api.matricula.interfaces;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
 import uce.edu.web.api.matricula.aplication.MateriaService;
 import uce.edu.web.api.matricula.domain.Materia;
 
@@ -30,47 +31,71 @@ public class MateriaResource {
 
     @POST
     @Path("")
-    public void crear(Materia materia) {
+    public Response crear(Materia materia) {
         materiaService.crear(materia);
+        return Response
+                .status(Response.Status.CREATED) // 201
+                .entity(materia)
+                .build();
     }
 
     @PUT
     @Path("/{id}")
-    public void actualizar(
+    public Response actualizar(
             @PathParam("id") Integer id,
             Materia materia) {
+
         materiaService.actualizar(id, materia);
+
+        return Response
+                .status(Response.Status.OK) // 200
+                .entity(materia)
+                .build();
     }
 
     @PATCH
     @Path("/{id}")
-    public void actualizarParcial(
+    public Response actualizarParcial(
             @PathParam("id") Integer id,
             Materia materia) {
+
         materiaService.actualizarParcial(id, materia);
+
+        return Response
+                .status(Response.Status.OK)
+                .entity(materia)
+                .build();
     }
 
     @DELETE
     @Path("/{id}")
-    public void eliminar(@PathParam("id") Integer id) {
+    public Response eliminar(@PathParam("id") Integer id) {
         materiaService.eliminar(id);
+
+        return Response
+                .status(Response.Status.NO_CONTENT) // 204
+                .build();
     }
 
-    // ---------- NUEVOS ENDPOINTS ----------
-
-    // 1. Materias activas
     @GET
     @Path("/activas")
-    public List<Materia> listarActivas() {
-        return materiaService.listarActivas();
+    public Response listarActivas() {
+        List<Materia> materias = materiaService.listarActivas();
+
+        return Response
+                .ok(materias) // 200
+                .build();
     }
 
-    // 2. Buscar por nombre
     @GET
     @Path("/buscar/{nombre}")
-    public List<Materia> buscarPorNombre(
+    public Response buscarPorNombre(
             @PathParam("nombre") String nombre) {
-        return materiaService.buscarPorNombre(nombre);
-    }
 
+        List<Materia> materias = materiaService.buscarPorNombre(nombre);
+
+        return Response
+                .ok(materias)
+                .build();
+    }
 }
