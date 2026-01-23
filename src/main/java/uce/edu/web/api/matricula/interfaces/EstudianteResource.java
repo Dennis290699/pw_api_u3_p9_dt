@@ -17,6 +17,7 @@ public class EstudianteResource {
 
     @GET
     @Path("")
+    @Produces(MediaType.APPLICATION_JSON)
     public List<Estudiante> listarTodos() {
         System.out.println("ListarTODOSXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
         return this.estudianteService.listarTodos();
@@ -56,6 +57,7 @@ public class EstudianteResource {
 
     @GET
     @Path("/provincia/genero")
+    @Produces(MediaType.APPLICATION_XML)
     public List<Estudiante> buscarPorProvincia(@QueryParam("provincia") String provincia, @QueryParam("genero") String genero) {
         System.out.println("ListarPorProvincia");
         return this.estudianteService.buscarPorProvincia(provincia, genero);
