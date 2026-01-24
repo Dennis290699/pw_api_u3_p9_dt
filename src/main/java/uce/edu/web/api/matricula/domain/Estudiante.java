@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import jakarta.xml.bind.annotation.XmlRootElement;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @XmlRootElement
 @Entity
@@ -20,4 +21,6 @@ public class Estudiante extends PanacheEntityBase {
     public String provincia;
     public String genero;
 
+    @OneToMany(mappedBy = "estudiante", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    public List<Hijo> hijos;
 }

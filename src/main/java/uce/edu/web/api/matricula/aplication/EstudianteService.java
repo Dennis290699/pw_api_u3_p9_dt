@@ -3,7 +3,7 @@ package uce.edu.web.api.matricula.aplication;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
-import jakarta.ws.rs.POST;
+import uce.edu.web.api.matricula.aplication.representation.Estudianterepresentation;
 import uce.edu.web.api.matricula.domain.Estudiante;
 import uce.edu.web.api.matricula.infrastructure.EstudianteRepository;
 
@@ -16,46 +16,78 @@ public class EstudianteService {
     EstudianteRepository estudianteRepository;
 
     public List<Estudiante> listarTodos(){
-        return this.estudianteRepository.listAll();
+        return estudianteRepository.listAll();
     }
 
-    public Estudiante consultarbyId(Integer id){
-        return this.estudianteRepository.findById(id.longValue());
-    }
-
-    @Transactional
-    public void crear(Estudiante estudiante){
-        this.estudianteRepository.persist(estudiante);
+    public Estudianterepresentation consultarbyId(Integer id){
+        Estudiante est = estudianteRepository.findById(id.longValue());
+        return toRepresentation(est);
     }
 
     @Transactional
-    public void actualizar(Integer id,Estudiante est){
-        Estudiante estudiante = this.consultarbyId(id);
-        estudiante.apellido = est.apellido;
-        estudiante.nombre = est.nombre;
-        estudiante.fechaNacimiento = est.fechaNacimiento;
+    public void crear(Estudianterepresentation rep){
+        estudianteRepository.persist(toEntity(rep));
     }
 
     @Transactional
-    public void actualizarParcial(Integer id, Estudiante est) {
-        Estudiante estudiante = this.consultarbyId(id);
-        if (est.nombre != null) {
-            estudiante.nombre = est.nombre;
-        }
-        if (est.apellido != null) {
-            estudiante.apellido = est.apellido;
-        }
-        if (est.fechaNacimiento != null) {
-            estudiante.fechaNacimiento = est.fechaNacimiento;
-        }
+    public void actualizar(Integer id, Estudianterepresentation rep){
+        Estudiante estudiante = estudianteRepository.findById(id.longValue());
+
+        estudiante.nombre = rep.nombre;
+        estudiante.apellido = rep.apellido;
+        estudiante.fechaNacimiento = rep.fechaNacimiento;
+        estudiante.provincia = rep.provincia;
+    }
+
+    @Transactional
+    public void actualizarParcial(Integer id, Estudianterepresentation rep){
+        Estudiante estudiante = estudianteRepository.findById(id.longValue());
+
+        if (rep.nombre != null)
+            estudiante.nombre = rep.nombre;
+
+        if (rep.apellido != null)
+            estudiante.apellido = rep.apellido;
+
+        if (rep.fechaNacimiento != null)
+            estudiante.fechaNacimiento = rep.fechaNacimiento;
+
+        if (rep.provincia != null)
+            estudiante.provincia = rep.provincia;
     }
 
     @Transactional
     public void eliminar(Integer id){
-        this.estudianteRepository.deleteById(id.longValue());
+        estudianteRepository.deleteById(id.longValue());
     }
 
     public List<Estudiante> buscarPorProvincia(String provincia, String genero) {
-        return this.estudianteRepository.find("provincia = ?1 and genero = ?2", provincia,genero).list();
+        return estudianteRepository
+                .find("provincia = ?1 and genero = ?2", provincia, genero)
+                .list();
+    }
+
+    // ==========================
+    // MAPPERS
+    // ==========================
+
+    private Estudianterepresentation toRepresentation(Estudiante est) {
+        Estudianterepresentation rep = new Estudianterepresentation();
+        rep.id = est.id;
+        rep.nombre = est.nombre;
+        rep.apellido = est.apellido;
+        rep.fechaNacimiento = est.fechaNacimiento;
+        rep.provincia = est.provincia;
+        return rep;
+    }
+
+    private Estudiante toEntity(Estudianterepresentation rep) {
+        Estudiante est = new Estudiante();
+        est.id = rep.id;
+        est.nombre = rep.nombre;
+        est.apellido = rep.apellido;
+        est.fechaNacimiento = rep.fechaNacimiento;
+        est.provincia = rep.provincia;
+        return est;
     }
 }
