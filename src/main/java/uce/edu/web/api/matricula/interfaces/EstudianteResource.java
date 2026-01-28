@@ -7,6 +7,7 @@ import jakarta.ws.rs.core.Response;
 import uce.edu.web.api.matricula.aplication.EstudianteService;
 import uce.edu.web.api.matricula.aplication.HijoService;
 import uce.edu.web.api.matricula.aplication.representation.Estudianterepresentation;
+import uce.edu.web.api.matricula.aplication.representation.Hijorepresentation;
 import uce.edu.web.api.matricula.domain.Estudiante;
 import uce.edu.web.api.matricula.domain.Hijo;
 
@@ -77,7 +78,7 @@ public class EstudianteResource {
 
     @GET
     @Path("/{id}/hijos")
-    public List<Hijo> buscarPorIdEstudiante(@PathParam("id") Integer id) {
+    public List<Hijorepresentation> buscarPorIdEstudiante(@PathParam("id") Integer id) {
         return this.hijoService.buscarPorIdEstudiante(id);
     }
 }
