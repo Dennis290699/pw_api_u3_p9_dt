@@ -6,6 +6,7 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import uce.edu.web.api.matricula.aplication.EstudianteService;
 import uce.edu.web.api.matricula.aplication.HijoService;
+import uce.edu.web.api.matricula.aplication.representation.Estudianterepresentation;
 import uce.edu.web.api.matricula.domain.Estudiante;
 import uce.edu.web.api.matricula.domain.Hijo;
 
@@ -15,9 +16,9 @@ import java.util.List;
 @Produces(MediaType.APPLICATION_JSON)
 public class EstudianteResource {
     @Inject
-    private EstudianteService estudianteService;
+    EstudianteService estudianteService;
     @Inject
-    private HijoService hijoService;
+    HijoService hijoService;
 
     @GET
     @Path("")
@@ -31,7 +32,7 @@ public class EstudianteResource {
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Estudiante consultarbyId(@PathParam("id") Integer id) {
+    public Estudianterepresentation consultarbyId(@PathParam("id") Integer id) {
         return this.estudianteService.consultarbyId(id);
     }
 
@@ -39,7 +40,7 @@ public class EstudianteResource {
     @Path("")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response registrar(Estudiante estudiante) {
+    public Response registrar(Estudianterepresentation estudiante) {
         this.estudianteService.crear(estudiante);
         return Response.status(Response.Status.CREATED).entity(estudiante).build();
     }
@@ -48,7 +49,7 @@ public class EstudianteResource {
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response actualizar(@PathParam("id") Integer id,Estudiante estudiante) {
+    public Response actualizar(@PathParam("id") Integer id, Estudianterepresentation estudiante) {
         this.estudianteService.actualizar(id,estudiante);
         return Response.status(209).entity(estudiante).build();
     }
@@ -56,7 +57,7 @@ public class EstudianteResource {
     @PATCH
     @Path("/{id}")
     @Consumes(MediaType.APPLICATION_JSON)
-    public void actualizarParcial(@PathParam("id") Integer id, Estudiante estudiante) {
+    public void actualizarParcial(@PathParam("id") Integer id, Estudianterepresentation estudiante) {
         this.estudianteService.actualizarParcial(id,estudiante);
     }
 
