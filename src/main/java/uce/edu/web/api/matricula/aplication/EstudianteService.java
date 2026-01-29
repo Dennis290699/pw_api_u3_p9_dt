@@ -71,7 +71,7 @@ public class EstudianteService {
     // MAPPERS
     // ==========================
 
-    private Estudianterepresentation toRepresentation(Estudiante est) {
+    public Estudianterepresentation toRepresentation(Estudiante est) {
         Estudianterepresentation rep = new Estudianterepresentation();
         rep.id = est.id;
         rep.nombre = est.nombre;

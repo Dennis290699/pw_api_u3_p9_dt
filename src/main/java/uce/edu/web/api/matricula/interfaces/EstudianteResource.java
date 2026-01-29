@@ -2,15 +2,19 @@ package uce.edu.web.api.matricula.interfaces;
 
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
+import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import jakarta.ws.rs.core.UriInfo;
 import uce.edu.web.api.matricula.aplication.EstudianteService;
 import uce.edu.web.api.matricula.aplication.HijoService;
 import uce.edu.web.api.matricula.aplication.representation.Estudianterepresentation;
 import uce.edu.web.api.matricula.aplication.representation.Hijorepresentation;
+import uce.edu.web.api.matricula.aplication.representation.LinkDto;
 import uce.edu.web.api.matricula.domain.Estudiante;
 import uce.edu.web.api.matricula.domain.Hijo;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Path("/estudiantes")
@@ -21,12 +25,19 @@ public class EstudianteResource {
     @Inject
     HijoService hijoService;
 
+    @Context
+    private UriInfo uriInfo;
+
     @GET
     @Path("")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Estudiante> listarTodos() {
-        System.out.println("ListarTODOSXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
-        return this.estudianteService.listarTodos();
+    public List<Estudianterepresentation> listarTodos() {
+        List<Estudiante> lista = this.estudianteService.listarTodos();
+        List<Estudianterepresentation> listaRep = new ArrayList<>();
+        for (Estudiante est : lista) {
+            listaRep.add(this.construirLink(this.estudianteService.toRepresentation(est)));
+        }
+        return listaRep;
     }
 
     @GET
@@ -34,7 +45,7 @@ public class EstudianteResource {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public Estudianterepresentation consultarbyId(@PathParam("id") Integer id) {
-        return this.estudianteService.consultarbyId(id);
+        return this.construirLink(this.estudianteService.consultarbyId(id));
     }
 
     @POST
@@ -80,5 +91,15 @@ public class EstudianteResource {
     @Path("/{id}/hijos")
     public List<Hijorepresentation> buscarPorIdEstudiante(@PathParam("id") Integer id) {
         return this.hijoService.buscarPorIdEstudiante(id);
+    }
+
+    private Estudianterepresentation construirLink (Estudianterepresentation er) {
+     String self = this.uriInfo.getBaseUriBuilder().path(EstudianteResource.class)
+             .path(String.valueOf(er.id)).build().toString();
+
+     String hijos = this.uriInfo.getBaseUriBuilder().path(EstudianteResource.class).path(String.valueOf(er.id)).path("hijos".toString()).build().toString();
+
+     er.links = List.of(new LinkDto(self, "self"), new LinkDto(hijos, "hijos"));
+     return er;
     }
 }
