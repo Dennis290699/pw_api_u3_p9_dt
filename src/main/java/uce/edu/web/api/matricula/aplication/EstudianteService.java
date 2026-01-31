@@ -35,6 +35,7 @@ public class EstudianteService {
 
         estudiante.nombre = rep.nombre;
         estudiante.apellido = rep.apellido;
+        estudiante.genero = rep.genero;
         estudiante.fechaNacimiento = rep.fechaNacimiento;
         estudiante.provincia = rep.provincia;
     }
@@ -48,6 +49,9 @@ public class EstudianteService {
 
         if (rep.apellido != null)
             estudiante.apellido = rep.apellido;
+
+        if (rep.genero != null)
+            estudiante.genero = rep.genero;
 
         if (rep.fechaNacimiento != null)
             estudiante.fechaNacimiento = rep.fechaNacimiento;
@@ -76,6 +80,7 @@ public class EstudianteService {
         rep.id = est.id;
         rep.nombre = est.nombre;
         rep.apellido = est.apellido;
+        rep.genero = est.genero;
         rep.fechaNacimiento = est.fechaNacimiento;
         rep.provincia = est.provincia;
         return rep;
@@ -86,6 +91,7 @@ public class EstudianteService {
         est.id = rep.id;
         est.nombre = rep.nombre;
         est.apellido = rep.apellido;
+        est.genero = rep.genero;
         est.fechaNacimiento = rep.fechaNacimiento;
         est.provincia = rep.provincia;
         return est;

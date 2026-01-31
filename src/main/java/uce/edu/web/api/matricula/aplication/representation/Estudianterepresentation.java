@@ -7,6 +7,7 @@ public class Estudianterepresentation {
     public Integer id;
     public String nombre;
     public String apellido;
+    public String genero;
     public LocalDateTime fechaNacimiento;
     public String provincia;
     public List<LinkDto> links;
